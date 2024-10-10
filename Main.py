@@ -9,7 +9,7 @@ from MassConverter import MassConverter
 from VolumeConverter import VolumeConverter
 from ChemistryCalculator import ChemistryCalculator
 
-def displayMainMenu():
+def displayMainMenu() -> str:
     print("===== Menu =====")
     print("1. Converting temperature?")
     print("2. Converting mass?")
@@ -18,7 +18,7 @@ def displayMainMenu():
     print("5. Exit.")
     return input("Please enter your choice (1-5): ")
 
-def displayMolarMassMenu():
+def displayMolarMassMenu() -> str:
     print("===== Molar Mass and Moles Conversion =====")
     print("1. Get Molar Mass")
     print("2. Convert Moles to Mass")
