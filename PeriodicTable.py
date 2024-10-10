@@ -17,10 +17,10 @@ class PeriodicTable:
                 self.elements[symbol] = Element(symbol, atomicMass)
     
     def getMolarMass(self, formula: str) -> float: # Copy of this is made in ChemistryCalculator class; optimize later
-        pattern = re.compiler(r'([A-Z][a-z]*)(\d*)')
+        pattern = re.compile(r'([A-Z][a-z]*)(\d*)')
         molarMass = 0.0
 
-        for match in pattern.finderiter(formula):
+        for match in pattern.finditer(formula):
             elementSymbol = match.group(1)
             countStr = match.group(2)
             count = int(countStr) if countStr else 1 # Count the number of times a specific element appears
