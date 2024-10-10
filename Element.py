@@ -1,10 +1,10 @@
 class Element: # Will extend later for other variables
-    def __init__(self, symbol: str, atomicMass: float): # Constructor
+    def __init__(self, symbol: str, atomic_mass: float): # Constructor
         self.symbol = symbol
-        self.atomicMass = atomicMass
+        self.atomic_mass = atomic_mass
     
-    def getSymbol(self) -> str:
+    def get_symbol(self) -> str:
         return self.symbol
     
-    def getAtomicMass(self) -> float:
-        return self.atomicMass
+    def get_atomic_mass(self) -> float:
+        return self.atomic_mass
