@@ -26,16 +26,16 @@ def displayMolarMassMenu():
     print("4. Return to Main Menu")
     return input("Please enter your choice (1-4): ")
 
-def handleTemperatureConversion():
+def handleTemperatureConversion() -> None:
     temperatureObject = TemperatureConverter()
-    value = float(input("enter the temperature value: "))
+    value = float(input("Enter the temperature value: "))
     fromUnit = input("From unit (C/F/K): ").upper()
     toUnit = input("To unit (C/F/K): ").upper()
 
     result = temperatureObject.convert(value, fromUnit, toUnit)
     print(f"Converted Temperature: {result}")
 
-def handleMassConversion():
+def handleMassConversion() -> None:
     massObject = MassConverter()
     value = float(input("Enter the mass value: "))
     fromUnit = input("From unit (kg/g/lbs): ")
@@ -44,7 +44,7 @@ def handleMassConversion():
     result = massObject.convert(value, fromUnit, toUnit)
     print(f"Converted Mass: {result}")
 
-def handleVolumeConversion():
+def handleVolumeConversion() -> None:
     volumeObject = VolumeConverter()
     value = float(input("Enter the volume value: "))
     fromUnit = input("From unit (L/mL/gal/cc): ")
@@ -53,7 +53,7 @@ def handleVolumeConversion():
     result = volumeObject.convert(value, fromUnit, toUnit)
     print(f"Converted Volume: {result}")
 
-def handleMolarMassConversion():
+def handleMolarMassConversion() -> None:
     molarObject = ChemistryCalculator()
     while True:
         subChoice = displayMolarMassMenu()
@@ -75,7 +75,7 @@ def handleMolarMassConversion():
         else:
             print("Invalid choice. Please try again.")
 
-def main(): # Main method, where the entire program will execute from
+def main() -> None: # Main method, where the entire program will execute from
     while True:
         choice = displayMainMenu()
 
