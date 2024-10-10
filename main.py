@@ -7,6 +7,7 @@
 from temperature_converter import TemperatureConverter
 from mass_converter import MassConverter
 from volume_converter import VolumeConverter
+from pressure_converter import PressureConverter
 from chemistry_calculator import ChemistryCalculator
 
 def display_main_menu() -> str:
@@ -14,9 +15,10 @@ def display_main_menu() -> str:
     print("1. Converting temperature?")
     print("2. Converting mass?")
     print("3. Converting volume?")
-    print("4. Molar Mass and Moles Conversion")
-    print("5. Exit.")
-    return input("Please enter your choice (1-5): ")
+    print("4. Converting pressure?")
+    print("5. Molar Mass and Moles Conversion")
+    print("6. Exit.")
+    return input("Please enter your choice (1-6): ")
 
 def display_molar_mass_menu() -> str:
     print("===== Molar Mass and Moles Conversion =====")
@@ -38,8 +40,8 @@ def handle_temperature_conversion() -> None:
 def handle_mass_conversion() -> None:
     mass_object = MassConverter()
     value = float(input("Enter the mass value: "))
-    from_unit = input("From unit (kg/g/lbs): ")
-    to_unit = input("To unit (kg/g/lbs): ")
+    from_unit = input("From unit (kg/g/lbs): ").lower()
+    to_unit = input("To unit (kg/g/lbs): ").lower()
 
     result = mass_object.convert(value, from_unit, to_unit)
     print(f"Converted Mass: {result}")
@@ -47,11 +49,20 @@ def handle_mass_conversion() -> None:
 def handle_volume_conversion() -> None:
     volume_object = VolumeConverter()
     value = float(input("Enter the volume value: "))
-    from_unit = input("From unit (L/mL/gal/cc): ")
-    to_unit = input("To unit (L/mL/gal/cc): ")
+    from_unit = input("From unit (L/mL/gal/cc): ").lower()
+    to_unit = input("To unit (L/mL/gal/cc): ").lower()
 
     result = volume_object.convert(value, from_unit, to_unit)
     print(f"Converted Volume: {result}")
+
+def handle_pressure_conversion() -> None:
+    pressure_object = PressureConverter()
+    value = float(input("Enter the pressure value: "))
+    from_unit = input("From unit (Pa/atm/mmHg/inHg/torr)").lower()
+    to_unit = input("To unit (Pa/atm/mmHg/inHg/torr)").lower()
+
+    result = pressure_object.convert(value, from_unit, to_unit)
+    print(f'Converted Pressure: {result}')
 
 def handle_molar_mass_conversion() -> None:
     molar_object = ChemistryCalculator()
@@ -86,8 +97,10 @@ def main() -> None: # Main method, where the entire program will execute from
         elif choice == '3':
             handle_volume_conversion()
         elif choice == '4':
-            handle_molar_mass_conversion()
+            handle_pressure_conversion()
         elif choice == '5':
+            handle_molar_mass_conversion()
+        elif choice == '6':
             print("Have a nice day! :)")
             break
         else:

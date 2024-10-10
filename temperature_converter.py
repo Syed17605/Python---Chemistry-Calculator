@@ -1,13 +1,10 @@
-class TemperatureConverter: # Temperature conversions are relative so this class is written different from mass and volume
+class TemperatureConverter(): # Temperature conversions are relative so this class is written different from mass and volume
 
     # Convert temperature from one unit to anothewr
     def convert(self, value: float, from_unit: str, to_unit: str) -> str:
         if from_unit == to_unit:
             return f"{value} {to_unit}" # Returns the input since no conversion is required
-        
-        from_factor = self.get_temperature_conversion_factor(from_unit) # Need to collect which unit you're leaving behind
-        to_factor = self.get_temperature_conversion_factor(to_unit) # Need to collect which unit you're arriving at
-    
+            
         # Get temperature offsets for both units
         from_factor = self.get_temperature_conversion_factor(from_unit) # Need to collect which unit you're leaving behind
         to_factor = self.get_temperature_conversion_factor(to_unit) # Need to collect which unit you're arriving at
