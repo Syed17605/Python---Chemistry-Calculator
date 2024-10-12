@@ -58,11 +58,11 @@ def handle_volume_conversion() -> None:
 def handle_pressure_conversion() -> None:
     pressure_object = PressureConverter()
     value = float(input("Enter the pressure value: "))
-    from_unit = input("From unit (Pa/atm/mmHg/inHg/torr)").lower()
-    to_unit = input("To unit (Pa/atm/mmHg/inHg/torr)").lower()
+    from_unit = input("From unit (Pa/atm/mmHg/inHg/torr): ").lower()
+    to_unit = input("To unit (Pa/atm/mmHg/inHg/torr): ").lower()
 
     result = pressure_object.convert(value, from_unit, to_unit)
-    print(f'Converted Pressure: {result}')
+    print(f"Converted Pressure: {result}")
 
 def handle_molar_mass_conversion() -> None:
     molar_object = ChemistryCalculator()
@@ -104,7 +104,7 @@ def main() -> None: # Main method, where the entire program will execute from
             print("Have a nice day! :)")
             break
         else:
-            print("invalid choice. PLease try again.")
+            print("Invalid choice. Please try again.")
 
 if __name__ == "__main__": # Checks if the module is being run directly or imported
     main()
