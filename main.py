@@ -40,8 +40,8 @@ def handle_temperature_conversion() -> None:
 def handle_mass_conversion() -> None:
     mass_object = MassConverter()
     value = float(input("Enter the mass value: "))
-    from_unit = input("From unit (kg/g/lbs): ").lower()
-    to_unit = input("To unit (kg/g/lbs): ").lower()
+    from_unit = input("From unit (mg/kg/g/lbs): ").lower()
+    to_unit = input("To unit (mg/kg/g/lbs): ").lower()
 
     result = mass_object.convert(value, from_unit, to_unit)
     print(f"Converted Mass: {result}")

@@ -3,6 +3,9 @@ from converter import Converter
 class MassConverter(Converter):    
     # Gets conversion factor for mass units
     def get_conversion_factor(self, unit: str) -> float:
+        # If someone enters lb is still works
+        unit = "lbs" if unit == "lb" else unit
+
         conversion_factors = { # Instead of if statements, we'll utilize dictionary mapping
             "mg": 0.001,    # 1 mg = 0.001 g
             "g": 1.0,       # 1 g = 1 g
