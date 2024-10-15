@@ -1,0 +1,100 @@
+[
+    {
+        "unitType": "Pressure",
+        "units": [
+            {
+                "unitName": "Pascal",
+                "unitSymbol": ["pa", "Pa", "PA"],
+                "conversionFactor": 0.0075
+            },
+            {
+                "unitName": "Torr",
+                "unitSymbol": ["torr", "Torr", "TORR"],
+                "conversionFactor": 1.0
+            },
+            {
+                "unitName": "Millimeters Of Mercury",
+                "unitSymbol": ["mmhg", "MMHG", "mmHg", "MMhg", "mmHG"],
+                "conversionFactor": 1.0
+            },
+            {
+                "unitName": "Standard Atmosphere",
+                "unitSymbol": ["atm", "ATM", "Atm"],
+                "conversionFactor": 760.0
+            },
+            {
+                "unitName": "Inches Of Mercury",
+                "unitSymbol": ["inhg", "INHG", "inHg", "INhg", "inHG"],
+                "conversionFactor": 25.4
+            }
+        ]
+    },
+    {
+        "unitType": "Temperature",
+        "units": [
+            {
+                "unitName": "Celcius",
+                "unitSymbol": ["c", "C"]
+            },
+            {
+                "unitName": "Kelvin",
+                "unitSymbol": ["k", "K"]
+            },
+            {
+                "unitName": "Fahrenheit",
+                "unitSymbol": ["f", "F"],
+                "conversionFactor": 0.0
+            }
+        ]
+    },
+    {
+        "unitType": "Mass",
+        "units": [
+            {
+                "unitName": "Grams",
+                "unitSymbol": ["g", "G"],
+                "conversionFactor": 0.001
+            },
+            {
+                "unitName": "Kilograms",
+                "unitSymbol": ["kg", "KG", "Kg"],
+                "conversionFactor": 1.0
+            },
+            {
+                "unitName": "Milligrams",
+                "unitSymbol": ["mg", "MG", "Mg"],
+                "conversionFactor": 1000.0
+            },
+            {
+                "unitName": "Pounds",
+                "unitSymbol": ["lbs", "LBS", "Lbs"],
+                "conversionFactor": 453.592
+            }
+        ]
+    },
+    {
+        "unitType": "Volume",
+        "units": [
+            {
+                "unitName": "Milliliters",
+                "unitSymbol": ["ml", "ML", "Ml"],
+                "conversionFactor": 0.001
+            },
+            {
+                "unitName": "Liters",
+                "unitSymbol": ["l", "L"],
+                "conversionFactor": 1.0
+            },
+            {
+                "unitName": "Gallons",
+                "unitSymbol": ["gal", "Gal", " GAL"],
+                "conversionFactor": 1000.0
+            },
+            {
+                "unitName": "Cubic Centimeters",
+                "unitSymbol": ["cc", "CC", "Cc"],
+                "conversionFactor": 453.592
+            }
+        ]
+    }
+]
