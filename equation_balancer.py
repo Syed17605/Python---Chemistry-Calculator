@@ -3,6 +3,13 @@ import csv
 
 from element import Element
 
+"""
+DO NOT TOUCH ANYTHING
+I WILL EXPLAIN IT ALL AND WILL FINISH IT
+DO NOT TOUCH ANYTHING
+"""
+
+
 class EquationBalancer:
     def __init__(self): # Constructor, loads the CSV file
         self.elements = []
