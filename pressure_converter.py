@@ -14,4 +14,4 @@ class PressureConverter(Converter):
         if unit in conversion_factors:
             return conversion_factors[unit]
         else:
-            raise ValueError(f"\nUnknown mass unit: {unit}.\nConvert to either Pa, atm, mmHg, inHg, or torr.")
+            raise ValueError(f"\nUnknown pressure unit: {unit}.\nConvert to either Pa, atm, mmHg, inHg, or torr.")
