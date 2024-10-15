@@ -11,6 +11,7 @@ from pressure_converter import PressureConverter
 from chemistry_calculator import ChemistryCalculator
 
 def display_main_menu() -> str:
+    print() # Formatting reasons (when ran in cmd)
     print("===== Menu =====")
     print("1. Converting temperature?")
     print("2. Converting mass?")
@@ -21,6 +22,7 @@ def display_main_menu() -> str:
     return input("Please enter your choice (1-6): ")
 
 def display_molar_mass_menu() -> str:
+    print() # Formatting reasons (when ran in cmd)
     print("===== Molar Mass and Moles Conversion =====")
     print("1. Get Molar Mass")
     print("2. Convert Moles to Mass")
@@ -30,6 +32,7 @@ def display_molar_mass_menu() -> str:
 
 def handle_temperature_conversion() -> None:
     temperature_object = TemperatureConverter()
+    print() # Formatting reasons (when ran in cmd)
     value = float(input("Enter the temperature value: "))
     from_unit = input("From unit (C/F/K): ").upper()
     to_unit = input("To unit (C/F/K): ").upper()
@@ -39,6 +42,7 @@ def handle_temperature_conversion() -> None:
 
 def handle_mass_conversion() -> None:
     mass_object = MassConverter()
+    print() # Formatting reasons (when ran in cmd)
     value = float(input("Enter the mass value: "))
     from_unit = input("From unit (mg/kg/g/lbs): ").lower()
     to_unit = input("To unit (mg/kg/g/lbs): ").lower()
@@ -48,6 +52,7 @@ def handle_mass_conversion() -> None:
 
 def handle_volume_conversion() -> None:
     volume_object = VolumeConverter()
+    print() # Formatting reasons (when ran in cmd)
     value = float(input("Enter the volume value: "))
     from_unit = input("From unit (L/mL/gal/cc): ").lower()
     to_unit = input("To unit (L/mL/gal/cc): ").lower()
@@ -57,6 +62,7 @@ def handle_volume_conversion() -> None:
 
 def handle_pressure_conversion() -> None:
     pressure_object = PressureConverter()
+    print() # Formatting reasons (when ran in cmd)
     value = float(input("Enter the pressure value: "))
     from_unit = input("From unit (Pa/atm/mmHg/inHg/torr): ").lower()
     to_unit = input("To unit (Pa/atm/mmHg/inHg/torr): ").lower()
@@ -70,13 +76,16 @@ def handle_molar_mass_conversion() -> None:
         sub_choice = display_molar_mass_menu()
 
         if sub_choice == '1':
+            print() # Formatting reasons (when ran in cmd)
             formula = input("Enter the chemical formula: ")
             molar_object.get_molar_mass(formula)
         elif sub_choice == '2':
+            print() # Formatting reasons (when ran in cmd)
             formula = input("Enter the chemical formula: ")
             moles = float(input("Enter the number of moles: "))
             molar_object.get_moles_to_mass(formula, moles)
         elif sub_choice == '3':
+            print() # Formatting reasons (when ran in cmd)
             formula = input("Enter the chemical formula: ")
             mass = float(input("Enter the mass of the element/compound in grams: "))
             molar_object.get_mass_to_moles(formula, mass)
