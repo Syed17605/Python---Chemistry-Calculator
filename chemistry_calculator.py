@@ -14,6 +14,6 @@ class ChemistryCalculator:
         return mass
     
     def get_mass_to_moles(self, formula: str, mass: float) -> float:
-        moles = self.periodic_table.get_moles_to_mass(formula, moles)
+        moles = self.periodic_table.get_mass_to_moles(formula, mass)
         print(f"Moles in {mass} grams of {formula}: {moles} mol")
         return moles
