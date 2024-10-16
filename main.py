@@ -3,12 +3,17 @@
 # Run the main.py file to use this program
 # Another note, this entire program needs to be optimize but I'm too lazy to optimize this right now
 
+# MOST OF THESE HANDLE CONVERSON METHODS CAN BE STORED IN THE ACTUAL CLASSES THEY ORIGINATE FROM
+# I WILL MOVE THEM LATER INTO THEIR RESPECTIVE CLASSES AND USE THIS AS A
+# DRIVER CLASS, DO NOT TOUCH THIS CLASS BY MOVING STUFF AROUND (feel free to add more fucntions though)
+
 # Importing classes
 from temperature_converter import TemperatureConverter
 from mass_converter import MassConverter
 from volume_converter import VolumeConverter
 from pressure_converter import PressureConverter
 from chemistry_calculator import ChemistryCalculator
+from concentration_calculator import ConcentrationCalculator
 
 def display_main_menu() -> str:
     print() # Formatting reasons (when ran in cmd)
@@ -18,8 +23,9 @@ def display_main_menu() -> str:
     print("3. Converting volume?")
     print("4. Converting pressure?")
     print("5. Molar Mass and Moles Conversion")
-    print("6. Exit.")
-    return input("Please enter your choice (1-6): ")
+    print("6. Molarity Calculations")
+    print("7. Exit.")
+    return input("Please enter your choice (1-7): ")
 
 def display_molar_mass_menu() -> str:
     print() # Formatting reasons (when ran in cmd)
@@ -95,6 +101,18 @@ def handle_molar_mass_conversion() -> None:
         else:
             print("Invalid choice. Please try again.")
 
+def handle_concentration_calculations() -> None:
+    # concentration_object = ConcentrationCalculator()
+    print() # Formatting reasons (when ran in cmd)
+    solute_mass = float(input("Enter the mass of the solute (g): "))
+    solvent_mass = float(input("Enter the mass of the solvent (g): "))
+    volume = float(input("Enter the volume of the solution (L): "))
+    molar_mass = float(input("Enter the molar mass of the solute (g/mol): "))
+    concentration_object = ConcentrationCalculator(solute_mass, solvent_mass, volume)
+
+    print(f"Molarity: {concentration_object.molarity(molar_mass)} M")
+    print(f"Molality: {concentration_object.molality(molar_mass)} m")
+
 def main() -> None: # Main method, where the entire program will execute from
     while True:
         choice = display_main_menu()
@@ -110,6 +128,8 @@ def main() -> None: # Main method, where the entire program will execute from
         elif choice == '5':
             handle_molar_mass_conversion()
         elif choice == '6':
+            handle_concentration_calculations()
+        elif choice == '7':
             print("Have a nice day! :)")
             break
         else:
