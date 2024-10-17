@@ -102,12 +102,11 @@ def handle_molar_mass_conversion() -> None:
             print("Invalid choice. Please try again.")
 
 def handle_concentration_calculations() -> None:
-    # concentration_object = ConcentrationCalculator()
     print() # Formatting reasons (when ran in cmd)
-    solute_mass = float(input("Enter the mass of the solute (g): "))
-    solvent_mass = float(input("Enter the mass of the solvent (g): "))
-    volume = float(input("Enter the volume of the solution (L): "))
-    molar_mass = float(input("Enter the molar mass of the solute (g/mol): "))
+    solute_mass = float(input("Enter the mass of the solute (g): ")) # Used for molarity calculation
+    solvent_mass = float(input("Enter the mass of the solvent (g): ")) # Used for molality calculation
+    volume = float(input("Enter the volume of the solution (L): ")) # Used for molarity calculation
+    molar_mass = float(input("Enter the molar mass of the solute (g/mol): ")) # Used for molarity and molality calculation
     concentration_object = ConcentrationCalculator(solute_mass, solvent_mass, volume)
 
     print(f"Molarity: {concentration_object.molarity(molar_mass)} M")
