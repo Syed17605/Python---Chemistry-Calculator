@@ -17,3 +17,14 @@ class MassConverter(Converter):
             return conversion_factors[unit]
         else:
             raise ValueError(f"\nUnknown mass unit: {unit}.\nConvert to either mg, g, kg, or lbs.")
+
+    @staticmethod # This is a static function; not using any instance variables
+    def handle_mass_conversion() -> None:
+        mass_object = MassConverter()
+        print() # Formatting reasons (when ran in cmd)
+        value = float(input("Enter the mass value: "))
+        from_unit = input("From unit (mg/kg/g/lbs): ").lower()
+        to_unit = input("To unit (mg/kg/g/lbs): ").lower()
+
+        result = mass_object.convert(value, from_unit, to_unit)
+        print(f"Converted Mass: {result}")
