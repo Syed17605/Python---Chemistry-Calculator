@@ -14,3 +14,14 @@ class VolumeConverter(Converter):
             return conversion_factors[unit]
         else:
             raise ValueError(f"\nUnknown volume unit: {unit}.\nConvert to either mL, L, gal, or cc.")
+    
+    @staticmethod # This is a static function; not using any instance variables
+    def handle_volume_conversion() -> None:
+        volume_object = VolumeConverter()
+        print() # Formatting reasons (when ran in cmd)
+        value = float(input("Enter the volume value: "))
+        from_unit = input("From unit (L/mL/gal/cc): ").lower()
+        to_unit = input("To unit (L/mL/gal/cc): ").lower()
+
+        result = volume_object.convert(value, from_unit, to_unit)
+        print(f"Converted Volume: {result}")
