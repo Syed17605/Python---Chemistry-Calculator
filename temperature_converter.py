@@ -43,3 +43,14 @@ class TemperatureConverter(): # Temperature conversions are relative so this cla
             "K": lambda v: v + to_factor                  # Kelvin to Celsius
         }
         return conversions[to_unit](celsius_value)
+    
+    @staticmethod # This is a static function; not using any instance variables
+    def handle_temperature_conversion() -> None:
+        temperature_object = TemperatureConverter()
+        print() # Formatting reasons (when ran in cmd)
+        value = float(input("Enter the temperature value: "))
+        from_unit = input("From unit (C/F/K): ").upper()
+        to_unit = input("To unit (C/F/K): ").upper()
+
+        result = temperature_object.convert(value, from_unit, to_unit)
+        print(f"Converted Temperature: {result}")
