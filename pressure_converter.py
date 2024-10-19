@@ -15,3 +15,14 @@ class PressureConverter(Converter):
             return conversion_factors[unit]
         else:
             raise ValueError(f"\nUnknown pressure unit: {unit}.\nConvert to either Pa, atm, mmHg, inHg, or torr.")
+        
+    @staticmethod # This is a static function; not using any instance variables
+    def handle_pressure_conversion() -> None:
+        pressure_object = PressureConverter()
+        print() # Formatting reasons (when ran in cmd)
+        value = float(input("Enter the pressure value: "))
+        from_unit = input("From unit (Pa/atm/mmHg/inHg/torr): ").lower()
+        to_unit = input("To unit (Pa/atm/mmHg/inHg/torr): ").lower()
+
+        result = pressure_object.convert(value, from_unit, to_unit)
+        print(f"Converted Pressure: {result}")
