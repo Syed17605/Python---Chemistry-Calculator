@@ -10,6 +10,7 @@ from volume_converter import VolumeConverter
 from pressure_converter import PressureConverter
 from chemistry_calculator import ChemistryCalculator
 from concentration_calculator import ConcentrationCalculator
+from equation_balancer import EquationBalancer
 
 def display_main_menu() -> str:
     print() # Formatting reasons (when ran in cmd)
@@ -20,8 +21,9 @@ def display_main_menu() -> str:
     print("4. Converting pressure?")
     print("5. Molar Mass and Moles Conversion")
     print("6. Molarity Calculations")
-    print("7. Exit.")
-    return input("Please enter your choice (1-7): ")
+    print("7. Equation Balancer")
+    print("8. Exit.")
+    return input("Please enter your choice (1-8): ")
 
 def main() -> None: # Main method, where the entire program will execute from
     while True:
@@ -46,6 +48,9 @@ def main() -> None: # Main method, where the entire program will execute from
             concentration_calculations = ConcentrationCalculator(0.0, 0.0, 0.0) # Instantiating ConcentrationCalculator object; passing default values into the constructor; it's just how the constructor is instantiated
             concentration_calculations.handle_concentration_calculations() # Calling the molar mass conversion function
         elif choice == '7':
+            equation_balancer = EquationBalancer()
+            equation_balancer.handle_equation_balancer()
+        elif choice == '8':
             print("Have a nice day! :)")
             break
         else:
