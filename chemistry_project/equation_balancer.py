@@ -1,11 +1,15 @@
 import re
 import csv
 import sympy as sym
+import numpy as np
 
 
 class EquationBalancer:
     def __init__(self): # Constructor, loads the CSV file
-        self.elements = []
+        self.equation = "" # Current equation
+        self.elements = [] # Elements in current equation
+        self.coefficients = [] # Array of the coefficients
+        self.all_elements = []
         self.load_elements("Periodic Table of Elements.csv")
 
     def load_elements(self, file_path: str) -> None: # Extracts csv File data
@@ -14,119 +18,127 @@ class EquationBalancer:
             next(reader) # Skip the header
             for row in reader:
                 symbol = row[2].strip() # Extract the symbol (3rd column)
-                self.elements.append(symbol)
+                self.all_elements.append(symbol)
 
+    # Used for output and input, can change if you want it to look different
     def handle_equation_balancer(self):
         print()
         print("Enter an equation you would like to balance with no spaces")
         print("and no prefixes. Use (->) as the yeild arrow")
-        equ = self.balance(input("Enter equation:"))
-        print(f'Balanced equation is: {equ}')
+        self.equation = input("Enter equation:")
+        self.balanced_equation = self.balance()
+        print(f'Balanced equation is: {self.balanced_equation}')
 
-    def balance(self, equation: str):
+    # Returns true if its a valid equation
+    def is_valid(self) -> bool:
         # Checks that string is a valid equation
-        if equation.count("->") != 1:
+        if self.equation.count("->") != 1:
             print("Too many yeild arrows or no yeild arrows")
-            return
+            return False
 
         # Using re to make sure string contains only charcters it is supposed to contain
         # ^ asserts the start of the string, $ asserts the end of the string
         # [A-Za-z\d->], array of characters allowed in the string. A-Z, a-z, /d is all numbers, '-' and '>' and '+' and '(' and ')'
         # * indicates that the preceding character class can appear zero or more times, aka can be empty or full of those characters
-        if not re.match("^[A-Za-z\d>+()-]*$", equation):
+        if re.search(r'[^A-Za-z0-9->+()]', self.equation) is not None:
             print("Contains characters not allowed")
-            return
+            return False
 
         # Splits the equation into two strings, the products and the reactants
-        reactants, products = equation.split("->")
+        reactants, products = self.equation.split("->")
 
         # Checks if either string are empty
         if not reactants or not products:
             print("Either no reactants or no products")
-            return
-
-        # Splits the products and reactants lists into arrays of each product and reactants
-        reactants_list = reactants.split("+")
-        products_list = products.split("+")
-
-        # Get all elements
-
-        list_of_elements_reactant = []
-        for reactant in reactants_list:
-            reactant = re.sub(r'[()]', '', reactant)
-
-            pattern = '|'.join(sorted(self.elements, key=lambda x: -len(x)))  # Sort by length to match multi-letter elements first
-            matches = re.findall(pattern, reactant)
-            list_of_elements_reactant += matches
-
-        list_of_elements_product = []
-        for product in products_list:
-            product = re.sub(r'[()]', '', product)
-
-            pattern = '|'.join(sorted(self.elements, key=lambda x: -len(x)))  # Sort by length to match multi-letter elements first
-            matches = re.findall(pattern, product)
-            list_of_elements_product += matches
+            return False
         
-        # Removes dupes
-        list_of_elements_reactant = list(set(list_of_elements_reactant))
-        list_of_elements_product = list(set(list_of_elements_product))
+        self.reactants_list = reactants.split("+")
+        self.products_list = products.split("+")
+        self.reactants_and_products = self.reactants_list + self.products_list
+        self.last_reactant = len(self.reactants_list)-1
+        return True
         
-        if set(list_of_elements_product) != set(list_of_elements_reactant):
+    # Returns false if elements in products and reactants dont match
+    def find_elements(self) -> bool:
+         # Get all elements
+        reactant_elements = []
+        product_elements = []
+
+        for index, compound in enumerate(self.reactants_and_products):
+            compound = re.sub(r'[()]', '', compound)
+
+            pattern = '|'.join(sorted(self.all_elements, key=lambda x: -len(x)))  # Sort by length to match multi-letter elements first
+            matches = re.findall(pattern, compound)
+            if index <= self.last_reactant:
+                reactant_elements += matches
+            else:
+                product_elements += matches
+
+        if set(product_elements) != set(reactant_elements):
             print("Elements in reactants and product do not match")
-            return
+            return False
         
-        elements_list = list_of_elements_reactant
+        self.elements = list(set(reactant_elements))
+        return True
+    
+    # Returns true if equation is already balanced
+    def get_coefficients(self) -> bool:
+         # Make matrix for each element
+        matrix = [[0] * (len(self.reactants_list) + len(self.products_list)) for _ in range(len(self.elements))]
 
-        # Make matrix for each element
-        matrix = [[0] * (len(reactants_list) + len(products_list)) for _ in range(len(elements_list))]
-
-        reactants_and_products = reactants_list + products_list
-        products_index_start = len(reactants_list)
-        for r_i, element in enumerate(elements_list):
+        for row_index, element in enumerate(self.elements):
             for index in range(len(matrix[0])):
-                if element in reactants_and_products[index]:
-                    count = self.element_count(reactants_and_products[index], element)[element]
-                    if index >= products_index_start:
+                if element in self.reactants_and_products[index]:
+                    count = self.element_count(self.reactants_and_products[index], element)[element]
+                    if index >= self.last_reactant+1:
                         count *= -1
-                    matrix[r_i][index] = count
+                    matrix[row_index][index] = count
 
-        is_balanced = True
-        for row in matrix:
-            if sum(row) != 0:
-                is_balanced = False
-                break
+        matrix = np.array(matrix)
 
-        if is_balanced:
-            return equation
-        
+        row_sums = np.sum(matrix, axis=1)
+        if np.all(row_sums==0):
+            return True
 
         # Solve using Sympy for absolute-precision math
         matrix = sym.Matrix(matrix)    
         # find first basis vector == primary solution
-        coefficients = matrix.nullspace()[0]    
+        self.coefficients = matrix.nullspace()[0]    
         # find least common denominator, multiply through to convert to integer solution
-        coefficients *= sym.lcm([term.q for term in coefficients])
+        self.coefficients *= sym.lcm([term.q for term in self.coefficients])
+        return False
+
+    # Balances the equation
+    def balance(self) -> str:
+        # Check if equation is a valid equation and splits the reactants and products
+        if not self.is_valid():
+            return ""
+
+        # Get all elements
+        if not self.find_elements():
+            return ""
+        
+        # Returns if already balanced
+        if self.get_coefficients():
+            return self.equation
 
 
         # Put coefficients back into the equation
-        last_reactant = len(reactants_list)-1
-        last_element = len(reactants_and_products)-1
         solution = ""
-        for index, elem in enumerate(reactants_and_products):
-            if index == last_reactant:
+        for index, compound in enumerate(self.reactants_and_products):
+            if index == self.last_reactant:
                 end = "->"
-            elif index != last_element:
+            elif index != len(self.reactants_and_products)-1:
                 end = "+"
             else:
                 end = ""
 
-            coefficient = coefficients[index] if coefficients[index] != 1 else ""
+            coefficient = self.coefficients[index] if self.coefficients[index] != 1 else ""
 
-            solution += f'{coefficient}{elem}{end}'
+            solution += f'{coefficient}{compound}{end}'
         return solution
     
     def element_count(self, formula, elem):
-
         # \([A-Za-z\d]+\)\d* matches anything in parantheses plus the number following it
         # [A-Z][a-z]?\d*) matches any element not in parenthesis
         pattern = r'(\([A-Za-z\d]+\)\d*|[A-Z][a-z]?\d*)'
