@@ -1,12 +1,15 @@
 import re
 import csv
+import sympy as sym
+import numpy as np
 
 from element import Element
 
 """
-DO NOT TOUCH ANYTHING
-I WILL EXPLAIN IT ALL AND WILL FINISH IT
-DO NOT TOUCH ANYTHING
+IMPORTANT READ BEFORE USING THIS FILE OR ERROR WILL OCCUR
+I installed sympy for some calculations to make life easier
+You have to install this aswell so it works
+its a python package
 """
 
 
@@ -114,10 +117,132 @@ class EquationBalancer:
 
 
         # Make matrix for each element
-        matrix = [[0] * len(elements_list) for _ in range(len(elements_list))]
+        matrix = [[0] * (len(reactants_list) + len(products_list)) for _ in range(len(elements_list))]
         print(matrix)
 
+        reactants_and_products = reactants_list + products_list
+        print(f'P&R: {reactants_and_products}')
+        products_index_start = len(reactants_list)
+        for r_i, element in enumerate(elements_list):
+            for index in range(len(matrix[0])):
+                print(f'Element: {element}\nThing: {reactants_and_products[index]}')
+                if element in reactants_and_products[index]:
+                    count = self.element_count(reactants_and_products[index], element)[element]
+                    if index >= products_index_start:
+                        count *= -1
+                    matrix[r_i][index] = count
 
+
+        
+        print(matrix)
+
+        is_balanced = True
+        for row in matrix:
+            if sum(row) != 0:
+                is_balanced = False
+                break
+
+        if is_balanced:
+            return equation
+        
+# [[4, 2, -2], 
+#  [0, 1, -1]]
+        #r1, r2 = sym.symbols('r1 r2')
+        #sym.Matrix([[1, 1], [2, 1]]).rref_rhs(sym.Matrix([r1, r2]))
+        # coefficients = [[1] * len(matrix[0]) for _ in range(len(matrix))]
+        # rref_matrix = sym.Matrix(matrix).rref()[0]
+        # print(rref_matrix)
+        # print(coefficients)
+
+        # matrix = np.matrix(matrix)
+        # print(matrix)
+        # b = np.matrix([[0]* matrix.shape[1]]).T
+        # print(matrix.shape[1])
+        # b[matrix.shape[1]-1][0] = 1
+        # #b = b.T
+        # print(b)
+
+        #d = np.linalg.solve(matrix, b)
+        #print(d)
+
+        # Solve using Sympy for absolute-precision math
+        matrix = sym.Matrix(matrix)    
+        # find first basis vector == primary solution
+        coeffs = matrix.nullspace()[0]    
+        # find least common denominator, multiply through to convert to integer solution
+        coeffs *= sym.lcm([term.q for term in coeffs])
+        print(coeffs)
+
+
+
+        # Put coefficients back into the equation
+        num_of_reactants = len(reactants_list)
+        num_of_products = len(products_list)
+        end = ""
+        print(reactants_and_products)
+        for i, thing in enumerate(reactants_and_products):
+            if coeffs[i] == 1:
+                end += str(thing)
+            else:
+                end += f'{coeffs[i]}{thing}'
+            if i == num_of_reactants-1:
+                end += "->"
+            elif i != len(reactants_and_products)-1:
+                end += "+"
+
+        return end
+            
+
+        #matrix = sym.Matrix(matrix)
+        #matrix = sym.Matrix(matrix.transpose())
+        #solution = matrix.nullspace()
+        #print(solution)
+
+        #mat = rref_matrix * sym.Matrix(variables)
+        #solution = sym.solve_linear_system(rref_matrix, *variables)
+
+        #print(solution)
+
+        
+                
+
+
+
+
+
+
+
+
+    
+    def element_count(self, formula, elem):
+
+        # \([A-Za-z\d]+\)\d* matches anything in parantheses plus the number following it
+        # [A-Z][a-z]?\d*) matches any element not in parenthesis
+        pattern = r'(\([A-Za-z\d]+\)\d*|[A-Z][a-z]?\d*)'
+        # This is a list of each indicidual element, or the group in paranthesis like (H2)2 for example
+        tokens = re.findall(pattern, formula)
+
+        element_counts = {}
+
+        for token in tokens:
+            if elem in token:
+                if token.startswith('('):
+                    # using (H2)2 as example, inner_formula would be H2 and count would be 2
+                    inner_formula, count = re.match(r'\((.*?)\)(\d*)', token).groups()
+                    count = int(count) if count else 1 # count could be nothing ex. (H2O), no value after paranthesis
+
+                    # recusivly get the inner counts
+                    inner_counts = self.element_count(inner_formula, elem)
+
+                    # gets the actual count by multiplying outside by inside. ex. (H2)2 would be 4 bc 2 * 2
+                    for element, inner_count in inner_counts.items():
+                        element_counts[element] = element_counts.get(element, 0) + inner_count * count
+                else:
+                    element, count = re.match(r'([A-Z][a-z]*)(\d*)', token).groups()
+                    count = int(count) if count else 1
+                    element_counts[element] = element_counts.get(element, 0) + count
+
+        return element_counts
 
         # reactants_dict = {}
         # for reactant in reactants_list:
@@ -246,4 +371,4 @@ class EquationBalancer:
 if __name__ == '__main__':
     equation_balancer = EquationBalancer()
 
-    equation_balancer.balance("(H2)2+OH2->(H2O)")
+    print(equation_balancer.balance("C3H8+O2->CO2+H2O"))
