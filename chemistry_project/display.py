@@ -8,7 +8,9 @@ from chemistry_calculator import ChemistryCalculator
 from concentration_calculator import ConcentrationCalculator
 from equation_balancer import EquationBalancer
 
+# Simple display class
 class Display():
+    # Inits all objects and then displays menu
     def __init__(self):
         self.temperature_converter = TemperatureConverter()
         self.mass_converter = MassConverter()
@@ -19,6 +21,9 @@ class Display():
         self.equation_balancer = EquationBalancer()
         self.display_menu()
 
+    # Displays menu and buttons all working
+    # When button is clicked it runs the code associated with said button
+    # This still occurs in console but will convert to gui
     def display_menu(self):
         ui.label("What would you like to do?")
         with ui.button_group():
