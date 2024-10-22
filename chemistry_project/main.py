@@ -1,4 +1,5 @@
 from nicegui import ui
+
 from display import Display
 
 # Required by niceGUI

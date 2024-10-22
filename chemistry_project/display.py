@@ -17,7 +17,7 @@ class Display():
         self.volume_converter = VolumeConverter()
         self.pressure_converter = PressureConverter()
         self.molar_calculator = ChemistryCalculator()
-        self.concentration_calculator = ConcentrationCalculator(0.0,0.0,0.0)
+        self.concentration_calculator = ConcentrationCalculator()
         self.equation_balancer = EquationBalancer()
         self.display_menu()
 

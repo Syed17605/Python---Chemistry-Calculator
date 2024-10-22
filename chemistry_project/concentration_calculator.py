@@ -1,5 +1,5 @@
 class ConcentrationCalculator:
-    def __init__(self, solute_mass: float, solvent_mass: float, volume: float) -> None:
+    def __init__(self, solute_mass: float=0.0, solvent_mass: float=0.0, volume: float=0.0) -> None:
         self.solute_mass = solute_mass  # in grams
         self.solvent_mass = solvent_mass  # in grams
         self.volume = volume  # in liters
