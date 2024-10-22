@@ -36,9 +36,10 @@ def convert_temp():
     with display_constainer:
         ui.label("convert Temper")
 
-def convert_mass(): # Not commenting all these since they all the same just different label text
+def convert_mass(string): # Not commenting all these since they all the same just different label text
     display_constainer.clear()
     with display_constainer:
+        ui.label(string)
         ui.label("mass")
 
 def convert_vol():
@@ -75,7 +76,7 @@ def equation():
 # with ui.button_group:
 with buttons:
     ui.button(text="Convert Temperature", on_click=convert_temp)
-    ui.button(text="Convert Mass", on_click=convert_mass)
+    ui.button(text="Convert Mass", on_click=lambda: convert_mass("hello")) # Using lambda so I can use parameters
     ui.button(text="Convert Volume", on_click=convert_vol)
     ui.button(text="Convert Pressure", on_click=convert_press)
     ui.button(text="Convert Mass and Molar Mass", on_click=mass_and_molar_mass)
