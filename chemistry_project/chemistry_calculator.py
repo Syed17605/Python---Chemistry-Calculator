@@ -1,7 +1,11 @@
+from nicegui import ui
+
 from periodic_table import PeriodicTable # Importing the PeriodicTable class
 
 class ChemistryCalculator:
-    periodic_table = PeriodicTable("Periodic Table of Elements.csv")
+    def __init__(self, container: ui.row):
+        self.container = container
+        self.periodic_table = PeriodicTable("Periodic Table of Elements.csv")
 
     def display_molar_mass_menu() -> str:
         print() # Formatting reasons (when ran in cmd)

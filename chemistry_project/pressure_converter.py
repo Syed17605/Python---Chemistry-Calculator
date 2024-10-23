@@ -1,6 +1,11 @@
+from nicegui import ui
+
 from converter import Converter
 
 class PressureConverter(Converter):
+    def __init__(self, container: ui.row) -> None:
+        super().__init__(container)
+
     # Gets conversion factor for pressure units
     def get_conversion_factor(self, unit: str) -> float:
         conversion_factors = { # Instead of if statements, we'll utilize dictionary mapping

@@ -2,17 +2,25 @@ import re
 import csv
 import sympy as sym
 import numpy as np
+from nicegui import ui
 
 
 class EquationBalancer:
-    def __init__(self): # Constructor, loads the CSV file
+    # Constructor
+    def __init__(self, container: ui.row):
+        self.container = container # Container for the screen display
         self.equation = "" # Current equation
+        self.balanced_equation = "" # Balanced Equation
         self.elements = [] # Elements in current equation
         self.coefficients = [] # Array of the coefficients
-        self.all_elements = []
+        self.all_elements = [] # Periodic table of Elemenets
+        self.text_box_value = "" # String that is in the text box
+        self.balanced_equation_label = None # ui.label for the balanced equation
+        self.message = "Balanced" # Notifacation message when trying to balance the equation
         self.load_elements("Periodic Table of Elements.csv")
 
-    def load_elements(self, file_path: str) -> None: # Extracts csv File data
+    # Extracts csv file data
+    def load_elements(self, file_path: str) -> None:
         with open(file_path, newline='') as csvfile:
             reader = csv.reader(csvfile)
             next(reader) # Skip the header
@@ -20,20 +28,38 @@ class EquationBalancer:
                 symbol = row[2].strip() # Extract the symbol (3rd column)
                 self.all_elements.append(symbol)
 
-    # Used for output and input, can change if you want it to look different
-    def handle_equation_balancer(self):
-        print()
-        print("Enter an equation you would like to balance with no spaces")
-        print("and no prefixes. Use (->) as the yeild arrow")
-        self.equation = input("Enter equation:")
+    # Updates the text from the text box
+    def update_text(self, value):
+        self.text_box_value = value
+
+    # Button is pressed and can preform the equation calculations
+    def set_equation(self):
+        self.equation = self.text_box_value
         self.balanced_equation = self.balance()
-        print(f'Balanced equation is: {self.balanced_equation}')
+        # Notifies of message if cannot be balanced
+        ui.notify(self.message, position="center", close_button=False, multi_line=True)
+        # Removes the label if already on screen
+        if self.balanced_equation_label:
+            self.container.remove(self.balanced_equation_label)
+        # Adds label to screen
+        with self.container:
+            self.balanced_equation_label = ui.label(f'Balanced Equation: {self.balanced_equation}')
+
+    # Used to display the gui output
+    def handle_equation_balancer(self):
+        self.container.clear()
+        with self.container:
+            ui.label("Enter an equation you would like to balance")
+            ui.label("Please use no spaces and use -> as the yeild arrow")
+            ui.input(label='Equation', placeholder='start typing here',
+                     on_change=lambda e: self.update_text(e.value))
+            ui.button("Enter", on_click=self.set_equation)
 
     # Returns true if its a valid equation
     def is_valid(self) -> bool:
         # Checks that string is a valid equation
         if self.equation.count("->") != 1:
-            print("Too many yeild arrows or no yeild arrows")
+            self.message = "Too many yeild arrows or no yeild arrows"
             return False
 
         # Using re to make sure string contains only charcters it is supposed to contain
@@ -41,7 +67,7 @@ class EquationBalancer:
         # [A-Za-z\d->], array of characters allowed in the string. A-Z, a-z, /d is all numbers, '-' and '>' and '+' and '(' and ')'
         # * indicates that the preceding character class can appear zero or more times, aka can be empty or full of those characters
         if re.search(r'[^A-Za-z0-9->+()]', self.equation) is not None:
-            print("Contains characters not allowed")
+            self.message = "Contains characters not allowed"
             return False
 
         # Splits the equation into two strings, the products and the reactants
@@ -49,7 +75,7 @@ class EquationBalancer:
 
         # Checks if either string are empty
         if not reactants or not products:
-            print("Either no reactants or no products")
+            self.message = "Either no reactants or no products"
             return False
         
         self.reactants_list = reactants.split("+")
@@ -75,7 +101,7 @@ class EquationBalancer:
                 product_elements += matches
 
         if set(product_elements) != set(reactant_elements):
-            print("Elements in reactants and product do not match")
+            self.message = "Elements in reactants and product do not match"
             return False
         
         self.elements = list(set(reactant_elements))
@@ -112,14 +138,15 @@ class EquationBalancer:
     def balance(self) -> str:
         # Check if equation is a valid equation and splits the reactants and products
         if not self.is_valid():
-            return ""
+            return "Can't Balance"
 
         # Get all elements
         if not self.find_elements():
-            return ""
+            return "Can't Balance"
         
         # Returns if already balanced
         if self.get_coefficients():
+            self.message = "Balanced"
             return self.equation
 
 
@@ -136,6 +163,7 @@ class EquationBalancer:
             coefficient = self.coefficients[index] if self.coefficients[index] != 1 else ""
 
             solution += f'{coefficient}{compound}{end}'
+        self.message = "Balanced"
         return solution
     
     def element_count(self, formula, elem):

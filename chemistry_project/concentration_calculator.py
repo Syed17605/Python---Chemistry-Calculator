@@ -1,5 +1,8 @@
+from nicegui import ui
+
 class ConcentrationCalculator:
-    def __init__(self, solute_mass: float=0.0, solvent_mass: float=0.0, volume: float=0.0) -> None:
+    def __init__(self, container: ui.row, solute_mass: float=0.0, solvent_mass: float=0.0, volume: float=0.0) -> None:
+        self.container = container
         self.solute_mass = solute_mass  # in grams
         self.solvent_mass = solvent_mass  # in grams
         self.volume = volume  # in liters

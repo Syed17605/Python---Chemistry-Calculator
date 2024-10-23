@@ -1,6 +1,11 @@
+from nicegui import ui
+
 from converter import Converter
 
 class MassConverter(Converter):    
+    def __init__(self, container: ui.row) -> None:
+        super().__init__(container)
+
     # Gets conversion factor for mass units
     def get_conversion_factor(self, unit: str) -> float:
         # If someone enters lb is still works

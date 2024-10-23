@@ -1,4 +1,8 @@
+from nicegui import ui
+
 class TemperatureConverter(): # Temperature conversions are relative so this class is written different from mass and volume
+    def __init__(self, container: ui.row) -> None:
+        self.container = container
 
     # Convert temperature from one unit to anothewr
     def convert(self, value: float, from_unit: str, to_unit: str) -> str:
