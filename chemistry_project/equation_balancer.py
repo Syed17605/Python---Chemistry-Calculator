@@ -37,7 +37,7 @@ class EquationBalancer:
         self.equation = self.text_box_value
         self.balanced_equation = self.balance()
         # Notifies of message if cannot be balanced
-        ui.notify(self.message, position="center", close_button=False, multi_line=True)
+        ui.notify(self.message, position="center", multi_line=True)
         # Removes the label if already on screen
         if self.balanced_equation_label:
             self.container.remove(self.balanced_equation_label)
