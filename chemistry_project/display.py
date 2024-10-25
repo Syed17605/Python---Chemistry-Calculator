@@ -12,12 +12,12 @@ class Display():
     def __init__(self):
         self.display_container = ui.column()
         self.choice_container = ui.row()
-        self.temperature_converter = TemperatureConverter(self.choice_container)
+        self.temperature_converter = TemperatureConverter(self.choice_container) # Currently working on
         self.mass_converter = Converter(self.choice_container, "Mass")
         self.volume_converter = Converter(self.choice_container, "Volume")
         self.pressure_converter = Converter(self.choice_container, "Pressure")
-        self.molar_calculator = ChemistryCalculator(self.choice_container)
-        self.concentration_calculator = ConcentrationCalculator(self.choice_container)
+        self.molar_calculator = ChemistryCalculator(self.choice_container) # Need to do
+        self.concentration_calculator = ConcentrationCalculator(self.choice_container) # Need to do
         self.equation_balancer = EquationBalancer(self.choice_container)
         self.display_menu()
 
