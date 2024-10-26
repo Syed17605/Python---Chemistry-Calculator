@@ -1,101 +1,121 @@
 [
     {
         "unitType": "Pressure",
+        "baseUnit": "Millimeters of Mercury",
         "units": [
             {
-                "Name": "Pascal",
-                "Symbol": "Pa",
-                "Conversion": 0.0075
+                "name": "Pascal",
+                "symbol": "Pa",
+                "toBase": "{x} / 133.3",
+                "fromBase": "{x} * 133.3"
             },
             {
-                "Name": "Torr",
-                "Symbol": "torr",
-                "Conversion": 1.0
+                "name": "Torr",
+                "symbol": "torr",
+                "toBase": "{x}",
+                "fromBase": "{x}"
             },
             {
-                "Name": "Millimeters of Mercury",
-                "Symbol": "mmHg",
-                "Conversion": 1.0
+                "name": "Millimeters of Mercury",
+                "symbol": "mmHg",
+                "toBase": "{x}",
+                "fromBase": "{x}"
             },
             {
-                "Name": "Standard Atmosphere",
-                "Symbol": "atm",
-                "Conversion": 760.0
+                "name": "Standard Atmosphere",
+                "symbol": "atm",
+                "toBase": "{x} * 760.0",
+                "fromBase": "{x} / 760.0"
             },
             {
-                "Name": "Inches of Mercury",
-                "Symbol": "inHg",
-                "Conversion": 25.4
+                "name": "Inches of Mercury",
+                "symbol": "inHg",
+                "toBase": "{x} * 25.4",
+                "fromBase": "{x} / 25.4"
             }
         ]
     },
     {
         "unitType": "Mass",
+        "baseUnit": "Grams",
         "units": [
             {
-                "Name": "Grams",
-                "Symbol": "g",
-                "Conversion": 1.0
+                "name": "Grams",
+                "symbol": "g",
+                "toBase": "{x}",
+                "fromBase": "{x}"
             },
             {
-                "Name": "Kilograms",
-                "Symbol": "kg",
-                "Conversion": 1000.0
+                "name": "Kilograms",
+                "symbol": "kg",
+                "toBase": "{x} * 1000.0",
+                "fromBase": "{x} / 1000.0"
             },
             {
-                "Name": "Milligrams",
-                "Symbol": "mg",
-                "Conversion": 0.001
+                "name": "Milligrams",
+                "symbol": "mg",
+                "toBase": "{x} / 1000.0",
+                "fromBase": "{x} * 1000.0"
             },
             {
-                "Name": "Pounds",
-                "Symbol": "lbs",
-                "Conversion": 453.592
+                "name": "Pounds",
+                "symbol": "lbs",
+                "toBase": "{x} * 453.592",
+                "fromBase": "{x} / 453.592"
             }
         ]
     },
     {
         "unitType": "Volume",
+        "baseUnit": "Liters",
         "units": [
             {
-                "Name": "Milliliters",
-                "Symbol": "mL",
-                "Conversion": 0.001
+                "name": "Milliliters",
+                "symbol": "mL",
+                "toBase": "{x} / 1000.0",
+                "fromBase": "{x} * 1000.0"
             },
             {
-                "Name": "Liters",
-                "Symbol": "L",
-                "Conversion": 1.0
+                "name": "Liters",
+                "symbol": "L",
+                "toBase": "{x}",
+                "fromBase": "{x}"
             },
             {
-                "Name": "Gallons",
-                "Symbol": "gal",
-                "Conversion": 3.785
+                "name": "Gallons",
+                "symbol": "gal",
+                "toBase": "{x} * 3.785",
+                "fromBase": "{x} / 3.785"
             },
             {
-                "Name": "Cubic Centimeters",
-                "Symbol": "cm³",
-                "Conversion": 0.001
+                "name": "Cubic Centimeters",
+                "symbol": "cm³",
+                "toBase": "{x} / 1000.0",
+                "fromBase": "{x} * 1000.0"
             }
         ]
     },
     {
         "unitType": "Temperature",
+        "baseUnit": "Kelvin",
         "units": [
             {
-                "Name": "Celcius",
-                "Symbol": "°C",
-                "Conversion": 1.0
+                "name": "Celcius",
+                "symbol": "°C",
+                "toBase": "{x} + 273.15",
+                "fromBase": "{x} - 273.15"
             },
             {
-                "Name": "Kelvin",
-                "Symbol": "K",
-                "Conversion": 1.0
+                "name": "Kelvin",
+                "symbol": "K",
+                "toBase": "{x}",
+                "fromBase": "{x}"
             },
             {
-                "Name": "Fahrenheit",
-                "Symbol": "°F",
-                "Conversion": 1.0
+                "name": "Fahrenheit",
+                "symbol": "°F",
+                "toBase": "({x} - 32) * 5/9 + 273.15",
+                "fromBase": "({x} - 273.15) * 9/5 + 32"
             }
         ]
     }
