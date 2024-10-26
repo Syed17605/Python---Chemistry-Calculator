@@ -5,6 +5,7 @@ from chemistry_calculator import ChemistryCalculator
 from concentration_calculator import ConcentrationCalculator
 from equation_balancer import EquationBalancer
 
+
 # Simple display class
 class Display():
     # Inits all objects and then displays menu

@@ -5,8 +5,8 @@ import numpy as np
 from nicegui import ui
 
 
+# Class for balancing a formula
 class EquationBalancer:
-    # Constructor
     def __init__(self, container: ui.row):
         self.container = container # Container for the screen display
         self.equation = "" # Current equation
@@ -166,6 +166,7 @@ class EquationBalancer:
         self.message = "Balanced"
         return solution
     
+    # Gats the number of a certain element from a formula
     def element_count(self, formula, elem):
         # \([A-Za-z\d]+\)\d* matches anything in parantheses plus the number following it
         # [A-Z][a-z]?\d*) matches any element not in parenthesis
