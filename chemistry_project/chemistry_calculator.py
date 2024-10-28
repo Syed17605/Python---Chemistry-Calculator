@@ -3,7 +3,7 @@ import re
 import periodictable
 from nicegui import ui
 
-
+# conda install conda-forge::
 class Selection(Enum):
     MASS_TO_MOLES = 1
     MOLES_TO_MASS = 2
@@ -20,9 +20,9 @@ class ChemistryCalculator:
         self.selcetion_ui = None
         self.elements = {element.symbol: element for element in periodictable.elements}
         self.selection_map = {
-            Selection.MASS_TO_MOLES: ("Mass (g)", self.update_mass, "Convert", f'Moles in {self.moles} grams of {self.formula} is ', ' mol', self.calculate_mass_to_moles),
-            Selection.MOLES_TO_MASS: ("Number of Moles", self.update_moles, "Convert", f'Mass of {self.moles} moles of {self.formula} is ', ' grams', self.calculate_moles_to_mass),
-            Selection.GET_MASS: ("", None, "Get Mass", f'Molar Mass of {self.formula} is ', ' g/mol', self.calculate_molar_mass)
+            Selection.MASS_TO_MOLES: ("Mass (g)", self.update_mass, "Convert", ' mol', self.calculate_mass_to_moles),
+            Selection.MOLES_TO_MASS: ("Number of Moles", self.update_moles, "Convert", ' grams', self.calculate_moles_to_mass),
+            Selection.GET_MASS: ("", None, "Get Mass", ' g/mol', self.calculate_molar_mass)
         }
 
     def update_formula(self, formula: str):
@@ -37,7 +37,7 @@ class ChemistryCalculator:
     def chemistry_ui(self, selection: Selection):
         self.selcetion_ui.clear()
 
-        number_input_message, number_function, button_message = self.selection_map.get(selection)[:-3]
+        number_input_message, number_function, button_message = self.selection_map.get(selection)[:-2]
 
         with self.selcetion_ui:
             ui.input(label="Chemical Formula", placeholder="ex. CO2, H2O",
@@ -51,10 +51,10 @@ class ChemistryCalculator:
 
         
     def button_function(self, selection: Selection): # UI WORKS BUT PRINTS 0.0 FOR EVERY VARIABLE
-        end_label_message_start, end_label_message_end, calculate_method = self.selection_map.get(selection)[-3:]
+        end_label_message_end, calculate_method = self.selection_map.get(selection)[-2:]
 
         final_value = calculate_method()
-        end_label_message = end_label_message_start + f'{final_value}' + end_label_message_end
+        end_label_message =  f'{final_value}' + end_label_message_end
 
         # Removes current label from screen if there is one
         if self.end_value_label:
