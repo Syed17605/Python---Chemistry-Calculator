@@ -1,7 +1,7 @@
 import re
-import csv
 import sympy as sym
 import numpy as np
+import periodictable
 from nicegui import ui
 
 
@@ -13,20 +13,10 @@ class EquationBalancer:
         self.balanced_equation = "" # Balanced Equation
         self.elements = [] # Elements in current equation
         self.coefficients = [] # Array of the coefficients
-        self.all_elements = [] # Periodic table of Elemenets
         self.text_box_value = "" # String that is in the text box
         self.balanced_equation_label = None # ui.label for the balanced equation
         self.message = "Balanced" # Notifacation message when trying to balance the equation
-        self.load_elements("Periodic Table of Elements.csv")
-
-    # Extracts csv file data
-    def load_elements(self, file_path: str) -> None:
-        with open(file_path, newline='') as csvfile:
-            reader = csv.reader(csvfile)
-            next(reader) # Skip the header
-            for row in reader:
-                symbol = row[2].strip() # Extract the symbol (3rd column)
-                self.all_elements.append(symbol)
+        self.all_elements = [element.symbol for element in periodictable.elements] # Periodic table of Elemenets
 
     # Updates the text from the text box
     def update_text(self, value):
