@@ -3,7 +3,7 @@ import re
 import periodictable
 from nicegui import ui
 
-# conda install conda-forge::
+# Enum for which button is pressed
 class Selection(Enum):
     MASS_TO_MOLES = 1
     MOLES_TO_MASS = 2
@@ -11,35 +11,47 @@ class Selection(Enum):
 
 
 class ChemistryCalculator:
-    def __init__(self, container: ui.row):
-        self.container = container
-        self.moles = 0.0
-        self.mass = 0.0
-        self.formula = ""
-        self.end_value_label = None
-        self.selcetion_ui = None
-        self.elements = {element.symbol: element for element in periodictable.elements}
-        self.selection_map = {
+    def __init__(self, container: ui.row) -> None:
+        self.container = container # Container for screen display
+        self.moles = 0.0 # Number of moles
+        self.mass = 0.0 # Mass in grams
+        self.formula = "" # Chemical formula
+        self.result_label = None # Product ui label
+        # self.selcetion_ui = None # Selection ui row
+        self.elements = {element.symbol: element for element in periodictable.elements} # All elements in periodic table
+
+        # {Slection: (input_message, update_function, button_message, end_unit, calculation_function)}
+        self.selection_map = { # Map for each enum to values written as a tuple
             Selection.MASS_TO_MOLES: ("Mass (g)", self.update_mass, "Convert", ' mol', self.calculate_mass_to_moles),
             Selection.MOLES_TO_MASS: ("Number of Moles", self.update_moles, "Convert", ' grams', self.calculate_moles_to_mass),
             Selection.GET_MASS: ("", None, "Get Mass", ' g/mol', self.calculate_molar_mass)
         }
 
-    def update_formula(self, formula: str):
-        self.formula = formula
+    def mass_to_moles(self):
+        if self.result_label is not None:
+             self.result_label = None
+        self.chemistry_ui(Selection.MASS_TO_MOLES)
 
-    def update_moles(self, moles: float):
-        self.moles = moles
+    def moles_to_mass(self):
+        if self.result_label is not None:
+             self.result_label = None
+        self.chemistry_ui(Selection.MOLES_TO_MASS)
 
-    def update_mass(self, mass: float):
-        self.mass = mass
+    def molar_mass(self):
+        if self.result_label is not None:
+             self.result_label = None
+        self.chemistry_ui(Selection.GET_MASS)
 
-    def chemistry_ui(self, selection: Selection):
-        self.selcetion_ui.clear()
+    # Handles the ui for each button
+    def chemistry_ui(self, selection: Selection) -> None:
+        # Clears selction display
+        self.container.clear()
 
+        # Gets variables from dictionary
         number_input_message, number_function, button_message = self.selection_map.get(selection)[:-2]
 
-        with self.selcetion_ui:
+        # Adds elements to selection display
+        with self.container:
             ui.input(label="Chemical Formula", placeholder="ex. CO2, H2O",
                      on_change=lambda e: self.update_formula(e.value))
             
@@ -47,30 +59,23 @@ class ChemistryCalculator:
                 ui.number(label=number_input_message, placeholder="1234",
                           on_change=lambda e: number_function(e.value))
                 
-            ui.button(button_message, on_click=lambda: self.button_function(selection))
+            ui.button(button_message, on_click=lambda: self.calculate(selection))
 
-        
-    def button_function(self, selection: Selection): # UI WORKS BUT PRINTS 0.0 FOR EVERY VARIABLE
-        end_label_message_end, calculate_method = self.selection_map.get(selection)[-2:]
+    # Handles the calculations
+    def calculate(self, selection: Selection):
+        # Gets variables from dictionary
+        unit, calculate_function = self.selection_map.get(selection)[-2:]
 
-        final_value = calculate_method()
-        end_label_message =  f'{final_value}' + end_label_message_end
+        # Calculates result
+        result = calculate_function()
+        result_message =  f'{result}' + unit
 
         # Removes current label from screen if there is one
-        if self.end_value_label:
-            self.container.remove(self.end_value_label)
+        if self.result_label is not None:
+            self.container.remove(self.result_label)
         # Adds label to screen; limits decimal to 3 places
         with self.container:
-            self.end_value_label = ui.label(end_label_message)
-
-    def calculate_mass_to_moles(self):
-        return self.mass / self.get_molar_mass()
-    
-    def calculate_moles_to_mass(self): 
-        return self.moles * self.get_molar_mass()
-
-    def calculate_molar_mass(self):
-        return self.get_molar_mass()
+            self.result_label = ui.label(result_message)
 
      # Gets the molar mass of a chemical compound
     def get_molar_mass(self) -> float:
@@ -89,11 +94,26 @@ class ChemistryCalculator:
 
         return molar_mass
     
-    def handle_molar_mass_conversion(self) -> None:
-        self.container.clear()
-        with self.container:
-            with ui.button_group():
-                ui.button("Get Molar Mass", on_click=lambda: self.chemistry_ui(Selection.GET_MASS))
-                ui.button("Convert Moles to Mass", on_click=lambda: self.chemistry_ui(Selection.MOLES_TO_MASS))
-                ui.button("Convert Mass to Moles", on_click=lambda: self.chemistry_ui(Selection.MASS_TO_MOLES))
-            self.selcetion_ui = ui.row()
+     # Updates formula variable
+    def update_formula(self, formula: str):
+        self.formula = formula
+
+    # Updates moles variable
+    def update_moles(self, moles: float):
+        self.moles = moles
+
+    # Updates mass variable
+    def update_mass(self, mass: float):
+        self.mass = mass
+
+    # Returns moles of given mass and formula
+    def calculate_mass_to_moles(self):
+        return self.mass / self.get_molar_mass()
+    
+    # Returns mass of given moles and formula
+    def calculate_moles_to_mass(self): 
+        return self.moles * self.get_molar_mass()
+
+    # Returns molar mass of given formula
+    def calculate_molar_mass(self):
+        return self.get_molar_mass()
